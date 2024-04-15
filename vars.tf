@@ -35,10 +35,16 @@ variable "IBMREGION" {
 }
 
 // IBM availability zones
-variable "ZONE" {
+variable "ZONE2" {
   type        = string
   default     = "us-east-1"
-  description = "Deployment zone. Currently only a single zone is supported."
+  description = "Deployment zone"
+}
+
+variable "ZONE2" {
+  type        = string
+  default     = "us-east-2"
+  description = "Deployment zone"
 }
 
 variable "VPC" {
@@ -63,6 +69,27 @@ variable "SUBNET_3" {
   description = "The ID of the Subnet for the HA heartbeat mechanism. Tied to Port3."
 }
 variable "SUBNET_4" {
+  type        = string
+  default     = ""
+  description = "The ID of the Subnet used for the HA management subnet. Tied to Port4."
+}
+
+variable "SUBNET_5" {
+  type        = string
+  default     = ""
+  description = "The ID of the Primary, Public Subnet Used for port1 on the FortiGate."
+}
+variable "SUBNET_6" {
+  type        = string
+  default     = ""
+  description = "The ID of the Secondary, Private Subnet Used for port2 on the FortiGate."
+}
+variable "SUBNET_7" {
+  type        = string
+  default     = ""
+  description = "The ID of the Subnet for the HA heartbeat mechanism. Tied to Port3."
+}
+variable "SUBNET_8" {
   type        = string
   default     = ""
   description = "The ID of the Subnet used for the HA management subnet. Tied to Port4."
