@@ -6,28 +6,28 @@ resource "ibm_is_volume" "logDisk1" {
   // Name must be lower case
   name    = "${var.CLUSTER_NAME}-logdisk1-${random_string.random_suffix.result}"
   profile = "10iops-tier"
-  zone    = var.ZONE
+  zone    = var.ZONE1
 }
 
 resource "ibm_is_volume" "logDisk2" {
   // Name must be lower case
   name    = "${var.CLUSTER_NAME}-logdisk2-${random_string.random_suffix.result}"
   profile = "10iops-tier"
-  zone    = var.ZONE
+  zone    = var.ZONE2
 }
 
-resource "ibm_is_floating_ip" "publicip" {
-  name   = "${var.CLUSTER_NAME}-publicip-${random_string.random_suffix.result}"
-  target = ibm_is_instance.fgt1.primary_network_interface[0].id
-}
-resource "ibm_is_floating_ip" "publicip2" {
-  name   = "${var.CLUSTER_NAME}-hamgmt-fgt1-${random_string.random_suffix.result}"
-  target = ibm_is_instance.fgt1.network_interfaces[2].id // fourth port.
-}
-resource "ibm_is_floating_ip" "publicip3" {
-  name   = "${var.CLUSTER_NAME}-hamgmt-fgt2-${random_string.random_suffix.result}"
-  target = ibm_is_instance.fgt2.network_interfaces[2].id //fourth port.
-}
+#resource "ibm_is_floating_ip" "publicip" {
+#  name   = "${var.CLUSTER_NAME}-publicip-${random_string.random_suffix.result}"
+#  target = ibm_is_instance.fgt1.primary_network_interface[0].id
+#}
+#resource "ibm_is_floating_ip" "publicip2" {
+#  name   = "${var.CLUSTER_NAME}-hamgmt-fgt1-${random_string.random_suffix.result}"
+#  target = ibm_is_instance.fgt1.network_interfaces[2].id // fourth port.
+#}
+#resource "ibm_is_floating_ip" "publicip3" {
+#  name   = "${var.CLUSTER_NAME}-hamgmt-fgt2-${random_string.random_suffix.result}"
+#  target = ibm_is_instance.fgt2.network_interfaces[2].id //fourth port.
+#}
 
 //Primary Fortigate
 resource "ibm_is_instance" "fgt1" {
@@ -72,7 +72,7 @@ resource "ibm_is_instance" "fgt1" {
   volumes = [ibm_is_volume.logDisk1.id]
 
   vpc       = data.ibm_is_vpc.vpc1.id
-  zone      = var.ZONE
+  zone      = var.ZONE1
   user_data = data.template_file.userdata_active.rendered
   keys      = [data.ibm_is_ssh_key.ssh_key.id]
   // Timeout issues persist. See https://www.ibm.com/cloud/blog/timeout-errors-with-ibm-cloud-schematics
@@ -91,18 +91,18 @@ resource "ibm_is_instance" "fgt2" {
   name    = "${var.CLUSTER_NAME}-fortigate2-${random_string.random_suffix.result}"
   image   = ibm_is_image.vnf_custom_image.id
   profile = var.PROFILE
-  resource_group = data.ibm_is_subnet.subnet1.resource_group
+  resource_group = data.ibm_is_subnet.subnet5.resource_group
 
   primary_network_interface {
     name                 = "${var.CLUSTER_NAME}-port1-${random_string.random_suffix.result}"
-    subnet               = data.ibm_is_subnet.subnet1.id
+    subnet               = data.ibm_is_subnet.subnet5.id
     security_groups      = [data.ibm_is_security_group.fgt_security_group.id]
     primary_ipv4_address = var.FGT2_STATIC_IP_PORT1
   }
 
   network_interfaces {
     name   = "${var.CLUSTER_NAME}-port2-${random_string.random_suffix.result}"
-    subnet = data.ibm_is_subnet.subnet2.id
+    subnet = data.ibm_is_subnet.subnet6.id
 
     security_groups      = [data.ibm_is_security_group.fgt_security_group.id]
     primary_ipv4_address = var.FGT2_STATIC_IP_PORT2
@@ -110,13 +110,13 @@ resource "ibm_is_instance" "fgt2" {
   }
   network_interfaces {
     name                 = "${var.CLUSTER_NAME}-port3-ha-heartbeat-${random_string.random_suffix.result}"
-    subnet               = data.ibm_is_subnet.subnet3.id
+    subnet               = data.ibm_is_subnet.subnet7.id
     security_groups      = [data.ibm_is_security_group.fgt_security_group.id]
     primary_ipv4_address = var.FGT2_STATIC_IP_PORT3
   }
   network_interfaces {
     name                 = "${var.CLUSTER_NAME}-port4-ha-mgmt-${random_string.random_suffix.result}"
-    subnet               = data.ibm_is_subnet.subnet4.id
+    subnet               = data.ibm_is_subnet.subnet8.id
     security_groups      = [data.ibm_is_security_group.fgt_security_group.id]
     primary_ipv4_address = var.FGT2_STATIC_IP_PORT4
   }
@@ -124,7 +124,7 @@ resource "ibm_is_instance" "fgt2" {
   volumes = [ibm_is_volume.logDisk2.id]
 
   vpc       = data.ibm_is_vpc.vpc1.id
-  zone      = var.ZONE
+  zone      = var.ZONE2
   user_data = data.template_file.userdata_passive.rendered
   keys      = [data.ibm_is_ssh_key.ssh_key.id]
   //Timeout issues persist. See https://www.ibm.com/cloud/blog/timeout-errors-with-ibm-cloud-schematics
