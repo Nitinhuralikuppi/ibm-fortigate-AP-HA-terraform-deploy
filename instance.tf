@@ -2,19 +2,19 @@ data "ibm_is_ssh_key" "ssh_key" {
   name = var.SSH_PUBLIC_KEY
 }
 
-resource "ibm_is_volume" "logDisk1" {
-  // Name must be lower case
-  name    = "${var.CLUSTER_NAME}-logdisk1-${random_string.random_suffix.result}"
-  profile = "10iops-tier"
-  zone    = var.ZONE1
-}
+#resource "ibm_is_volume" "logDisk1" {
+#  // Name must be lower case
+#  name    = "${var.CLUSTER_NAME}-logdisk1-${random_string.random_suffix.result}"
+#  profile = "10iops-tier"
+#  zone    = var.ZONE1
+#}
 
-resource "ibm_is_volume" "logDisk2" {
-  // Name must be lower case
-  name    = "${var.CLUSTER_NAME}-logdisk2-${random_string.random_suffix.result}"
-  profile = "10iops-tier"
-  zone    = var.ZONE2
-}
+#resource "ibm_is_volume" "logDisk2" {
+#  // Name must be lower case
+#  name    = "${var.CLUSTER_NAME}-logdisk2-${random_string.random_suffix.result}"
+#  profile = "10iops-tier"
+#  zone    = var.ZONE2
+#}
 
 #resource "ibm_is_floating_ip" "publicip" {
 #  name   = "${var.CLUSTER_NAME}-publicip-${random_string.random_suffix.result}"
@@ -69,7 +69,7 @@ resource "ibm_is_instance" "fgt1" {
 
   }
 
-  volumes = [ibm_is_volume.logDisk1.id]
+  #volumes = [ibm_is_volume.logDisk1.id]
 
   vpc       = data.ibm_is_vpc.vpc1.id
   zone      = var.ZONE1
@@ -121,7 +121,7 @@ resource "ibm_is_instance" "fgt2" {
     primary_ipv4_address = var.FGT2_STATIC_IP_PORT4
   }
 
-  volumes = [ibm_is_volume.logDisk2.id]
+  #volumes = [ibm_is_volume.logDisk2.id]
 
   vpc       = data.ibm_is_vpc.vpc1.id
   zone      = var.ZONE2
