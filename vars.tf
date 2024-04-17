@@ -129,32 +129,32 @@ variable "FGT1_PORT4_MGMT_GATEWAY" {
   description = "Gateway for Port 4 (HA management port) on the primary (ACTIVE) FortiGate."
 }
 // FortiGate 2 (PASSIVE) PORTS
-variable "FGT2_STATIC_IP_PORT1" {
+variable "FGT2_STATIC_IP_PORT5" {
   type        = string
   default     = ""
-  description = "STATIC IP Assignment for Port 1 on the Secondary (PASSIVE) FortiGate."
+  description = "STATIC IP Assignment for Port 5 on the Secondary (PASSIVE) FortiGate."
 }
-variable "FGT2_STATIC_IP_PORT2" {
+variable "FGT2_STATIC_IP_PORT6" {
   type        = string
   default     = ""
-  description = "STATIC IP Assignment for Port 2 on the Secondary (PASSIVE) FortiGate."
+  description = "STATIC IP Assignment for Port 6 on the Secondary (PASSIVE) FortiGate."
 }
 // Used for HA Heartbeat mechanism.
-variable "FGT2_STATIC_IP_PORT3" {
+variable "FGT2_STATIC_IP_PORT7" {
   type        = string
   default     = ""
   description = "Port used for the HA Heartbeat mechanism."
 }
 // Used as the HA management port.
-variable "FGT2_STATIC_IP_PORT4" {
+variable "FGT2_STATIC_IP_PORT8" {
   type        = string
   default     = ""
   description = "HA management port."
 }
-variable "FGT2_PORT4_MGMT_GATEWAY" {
+variable "FGT2_PORT8_MGMT_GATEWAY" {
   type        = string
   default     = ""
-  description = "Gateway for Port 4 (HA management port) on the secondary (PASSIVE) FortiGate."
+  description = "Gateway for Port 8 (HA management port) on the secondary (PASSIVE) FortiGate."
 }
 variable "SECURITY_GROUP" {
   type        = string
