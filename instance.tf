@@ -94,31 +94,31 @@ resource "ibm_is_instance" "fgt2" {
   resource_group = data.ibm_is_subnet.subnet5.resource_group
 
   primary_network_interface {
-    name                 = "${var.CLUSTER_NAME}-port1-${random_string.random_suffix.result}"
+    name                 = "${var.CLUSTER_NAME}-port5-${random_string.random_suffix.result}"
     subnet               = data.ibm_is_subnet.subnet5.id
     security_groups      = [data.ibm_is_security_group.fgt_security_group.id]
-    primary_ipv4_address = var.FGT2_STATIC_IP_PORT1
+    primary_ipv4_address = var.FGT2_STATIC_IP_PORT5
   }
 
   network_interfaces {
-    name   = "${var.CLUSTER_NAME}-port2-${random_string.random_suffix.result}"
+    name   = "${var.CLUSTER_NAME}-port6-${random_string.random_suffix.result}"
     subnet = data.ibm_is_subnet.subnet6.id
 
     security_groups      = [data.ibm_is_security_group.fgt_security_group.id]
-    primary_ipv4_address = var.FGT2_STATIC_IP_PORT2
+    primary_ipv4_address = var.FGT2_STATIC_IP_PORT6
 
   }
   network_interfaces {
-    name                 = "${var.CLUSTER_NAME}-port3-ha-heartbeat-${random_string.random_suffix.result}"
+    name                 = "${var.CLUSTER_NAME}-port7-ha-heartbeat-${random_string.random_suffix.result}"
     subnet               = data.ibm_is_subnet.subnet7.id
     security_groups      = [data.ibm_is_security_group.fgt_security_group.id]
-    primary_ipv4_address = var.FGT2_STATIC_IP_PORT3
+    primary_ipv4_address = var.FGT2_STATIC_IP_PORT7
   }
   network_interfaces {
-    name                 = "${var.CLUSTER_NAME}-port4-ha-mgmt-${random_string.random_suffix.result}"
+    name                 = "${var.CLUSTER_NAME}-port8-ha-mgmt-${random_string.random_suffix.result}"
     subnet               = data.ibm_is_subnet.subnet8.id
     security_groups      = [data.ibm_is_security_group.fgt_security_group.id]
-    primary_ipv4_address = var.FGT2_STATIC_IP_PORT4
+    primary_ipv4_address = var.FGT2_STATIC_IP_PORT8
   }
 
   #volumes = [ibm_is_volume.logDisk2.id]
@@ -149,10 +149,10 @@ data "template_file" "userdata_active" {
     fgt_1_static_port3 = var.FGT1_STATIC_IP_PORT3
     fgt_1_static_port4 = var.FGT1_STATIC_IP_PORT4
 
-    fgt_2_static_port1 = var.FGT2_STATIC_IP_PORT1
-    fgt_2_static_port2 = var.FGT2_STATIC_IP_PORT2
-    fgt_2_static_port3 = var.FGT2_STATIC_IP_PORT3
-    fgt_2_static_port4 = var.FGT2_STATIC_IP_PORT4
+    fgt_2_static_port1 = var.FGT2_STATIC_IP_PORT5
+    fgt_2_static_port2 = var.FGT2_STATIC_IP_PORT6
+    fgt_2_static_port3 = var.FGT2_STATIC_IP_PORT7
+    fgt_2_static_port4 = var.FGT2_STATIC_IP_PORT8
 
     netmask                  = var.NETMASK
     ibm_api_key              = var.IBMCLOUD_API_KEY
@@ -171,14 +171,14 @@ data "template_file" "userdata_passive" {
     fgt_1_static_port3 = var.FGT1_STATIC_IP_PORT3
     fgt_1_static_port4 = var.FGT1_STATIC_IP_PORT4
 
-    fgt_2_static_port1 = var.FGT2_STATIC_IP_PORT1
-    fgt_2_static_port2 = var.FGT2_STATIC_IP_PORT2
-    fgt_2_static_port3 = var.FGT2_STATIC_IP_PORT3
-    fgt_2_static_port4 = var.FGT2_STATIC_IP_PORT4
+    fgt_2_static_port5 = var.FGT2_STATIC_IP_PORT5
+    fgt_2_static_port6 = var.FGT2_STATIC_IP_PORT6
+    fgt_2_static_port7 = var.FGT2_STATIC_IP_PORT7
+    fgt_2_static_port8 = var.FGT2_STATIC_IP_PORT8
 
     netmask                  = var.NETMASK
     ibm_api_key              = var.IBMCLOUD_API_KEY
     region                   = var.IBMREGION[var.REGION]
-    fgt2_port_4_mgmt_gateway = var.FGT2_PORT4_MGMT_GATEWAY
+    fgt2_port_8_mgmt_gateway = var.FGT2_PORT8_MGMT_GATEWAY
   }
 }
